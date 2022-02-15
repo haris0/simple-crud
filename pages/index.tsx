@@ -93,8 +93,11 @@ const Home: NextPage<{
                 <tr>
                   <th>SKU</th>
                   <th>Product Name</th>
+                  <th>Quantity</th>
                   <th>Price</th>
-                  <th>Action</th>
+                  {isSigned() && (
+                    <th>Action</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -102,27 +105,35 @@ const Home: NextPage<{
                   <tr key={sku.id}>
                     <td>{sku.sku}</td>
                     <td>{sku.product_name}</td>
+                    <td>{sku.qty}</td>
                     <td>{sku.price}</td>
-                    <th style={{ textAlign: 'center' }}>
-                      <Link href={`/action/edit?sku=${sku.sku}`} passHref>
+                    {isSigned() && (
+                      <td style={{ textAlign: 'center' }}>
+                        <Link href={`/action/edit?sku=${sku.sku}`} passHref>
+                          <Button
+                            variant="success"
+                            style={{ marginRight: '1rem' }}
+                          >
+                            Edit
+                          </Button>
+                        </Link>
                         <Button
-                          variant="success"
-                          style={{ marginRight: '1rem' }}
+                          variant="danger"
+                          onClick={() => handleDelete(sku.sku)}
                         >
-                          Edit
+                          Delete
                         </Button>
-                      </Link>
-                      <Button
-                        variant="danger"
-                        onClick={() => handleDelete(sku.sku)}
-                      >
-                        Delete
-                      </Button>
-                    </th>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
             </Table>
+          </div>
+        )}
+        {!skus.length && (
+          <div>
+            No Record exists!
           </div>
         )}
       </main>

@@ -111,10 +111,17 @@ export const getSKUsById = async (sku: string, token: string): Promise<{
     Authorization: `Bearer ${token}`,
   };
 
-  const { result, error } = await axiosPost(path, data, { headers });
+  const { result } = await axiosPost(path, data, { headers });
 
-  const skusRes = [result?.data] || [];
-  const skusErr = !!error;
+  if (result?.data.id) {
+    const skusRes = [result?.data];
+    const skusErr = false;
+
+    return { skusRes, skusErr };
+  }
+
+  const skusRes = [] as ISKUs[];
+  const skusErr = true;
 
   return { skusRes, skusErr };
 };
