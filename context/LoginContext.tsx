@@ -13,12 +13,14 @@ export interface LoginContextType{
   token : string;
   changeToken: (newToken: string) => void;
   isSigned : () => boolean;
+  signout: () => void;
 }
 
 const initialLogin: LoginContextType = {
   token: '',
   changeToken: () => {},
   isSigned: () => false,
+  signout: () => {},
 };
 
 const LoginContext = createContext<LoginContextType>(initialLogin);
@@ -36,6 +38,11 @@ const LoginContextProvider = ({ children }: props) => {
     setToken(newToken);
   };
 
+  const signout = () => {
+    setToken('');
+    localStorage.removeItem('token');
+  };
+
   useEffect(() => {
     setToken(localStorage.getItem('token') as string || '');
   }, []);
@@ -48,6 +55,7 @@ const LoginContextProvider = ({ children }: props) => {
     token,
     isSigned,
     changeToken,
+    signout,
   }), [token]);
 
   return (
@@ -73,6 +81,12 @@ export const useChangeToken = () => {
   const { changeToken } = useContext(LoginContext);
 
   return changeToken;
+};
+
+export const useSignout = () => {
+  const { signout } = useContext(LoginContext);
+
+  return signout;
 };
 
 export default LoginContextProvider;

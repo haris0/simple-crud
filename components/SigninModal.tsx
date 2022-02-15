@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import { ChangeEvent } from 'react';
 import {
   Button,
   Col,
@@ -8,9 +10,24 @@ import {
 type props = {
   show: boolean;
   onHide: () => void
+  email: string;
+  password: string;
+  onEmailChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onPasswordChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSignin: () => void;
+  isFailed: boolean;
 }
 
-const SigninModal = ({ show, onHide }: props) => (
+const SigninModal = ({
+  show,
+  onHide,
+  email,
+  password,
+  onEmailChange,
+  onPasswordChange,
+  onSignin,
+  isFailed,
+}: props) => (
   <Modal
     show={show}
     onHide={onHide}
@@ -29,7 +46,12 @@ const SigninModal = ({ show, onHide }: props) => (
             Email
           </Form.Label>
           <Col>
-            <Form.Control type="email" placeholder="name@example.com" />
+            <Form.Control
+              type="email"
+              value={email}
+              onChange={onEmailChange}
+              placeholder="name@example.com"
+            />
           </Col>
         </Form.Group>
 
@@ -38,13 +60,27 @@ const SigninModal = ({ show, onHide }: props) => (
             Password
           </Form.Label>
           <Col>
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              type="password"
+              value={password}
+              onChange={onPasswordChange}
+              placeholder="Password"
+            />
           </Col>
+          {isFailed && (
+            <div style={{ color: 'red' }}>
+              Signin failed, please try again
+            </div>
+          )}
         </Form.Group>
       </Form>
     </Modal.Body>
     <Modal.Footer>
-      <Button>Signup</Button>
+      <Button
+        onClick={() => onSignin()}
+      >
+        Signin
+      </Button>
     </Modal.Footer>
   </Modal>
 );
