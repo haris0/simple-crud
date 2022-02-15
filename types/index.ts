@@ -10,3 +10,15 @@ export interface ISKUs {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface Data {
+  email: string;
+  updated_at: Date;
+  created_at: Date;
+  id: number;
+}
+export interface IRegisterSuccess {
+  success: boolean;
+  message: string;
+  data: Data;
+}

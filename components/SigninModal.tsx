@@ -14,7 +14,6 @@ const SigninModal = ({ show, onHide }: props) => (
   <Modal
     show={show}
     onHide={onHide}
-    size="lg"
     aria-labelledby="contained-modal-title-vcenter"
     centered
   >
@@ -25,7 +24,7 @@ const SigninModal = ({ show, onHide }: props) => (
     </Modal.Header>
     <Modal.Body>
       <Form>
-        <Form.Group className="mb-3" controlId="formPlaintextEmail">
+        <Form.Group controlId="formPlaintextEmail">
           <Form.Label column sm="2">
             Email
           </Form.Label>

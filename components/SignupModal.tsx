@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import { ChangeEvent } from 'react';
 import {
   Button,
   Col,
@@ -8,13 +10,27 @@ import {
 type props = {
   show: boolean;
   onHide: () => void
+  email: string;
+  password: string;
+  onEmailChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onPasswordChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onRegister: () => void;
+  isFailed: boolean;
 }
 
-const SignupModal = ({ show, onHide }: props) => (
+const SignupModal = ({
+  show,
+  onHide,
+  email,
+  password,
+  onEmailChange,
+  onPasswordChange,
+  onRegister,
+  isFailed,
+}: props) => (
   <Modal
     show={show}
     onHide={onHide}
-    size="lg"
     aria-labelledby="contained-modal-title-vcenter"
     centered
   >
@@ -25,12 +41,17 @@ const SignupModal = ({ show, onHide }: props) => (
     </Modal.Header>
     <Modal.Body>
       <Form>
-        <Form.Group className="mb-3" controlId="formPlaintextEmail">
+        <Form.Group controlId="formPlaintextEmail">
           <Form.Label column sm="2">
             Email
           </Form.Label>
           <Col>
-            <Form.Control type="email" placeholder="name@example.com" />
+            <Form.Control
+              type="email"
+              value={email}
+              onChange={onEmailChange}
+              placeholder="name@example.com"
+            />
           </Col>
         </Form.Group>
 
@@ -39,13 +60,27 @@ const SignupModal = ({ show, onHide }: props) => (
             Password
           </Form.Label>
           <Col>
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              type="password"
+              value={password}
+              onChange={onPasswordChange}
+              placeholder="Password"
+            />
           </Col>
+          {isFailed && (
+            <div style={{ color: 'red' }}>
+              Signup failed, please try again
+            </div>
+          )}
         </Form.Group>
       </Form>
     </Modal.Body>
     <Modal.Footer>
-      <Button>Signup</Button>
+      <Button
+        onClick={() => onRegister()}
+      >
+        Signup
+      </Button>
     </Modal.Footer>
   </Modal>
 );

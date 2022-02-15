@@ -20,3 +20,17 @@ export const axiosGet = async (url: string, config?: {}): Promise<any> => {
 
   return { data, error };
 };
+
+export const axiosPost = async (url: string, data?: {} | undefined, config?: {}): Promise<any> => {
+  let result = null;
+  let error = null;
+
+  try {
+    const response = await axiosInstance.post(url, data, config);
+    result = response;
+  } catch (err) {
+    error = err;
+  }
+
+  return { result, error };
+};
