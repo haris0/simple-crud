@@ -118,3 +118,43 @@ export const getSKUsById = async (sku: string, token: string): Promise<{
 
   return { skusRes, skusErr };
 };
+
+export const addProduct = async (
+  sku: string,
+  productName: string,
+  qty: string,
+  price: string,
+  unit: string,
+  status: string,
+  token: string,
+): Promise<{
+  addRes: ISKUs | { success: boolean, message: string},
+  addErr: boolean
+}> => {
+  const path = '/item/add';
+
+  const data = new FormData();
+  data.append('sku', sku);
+  data.append('product_name', productName);
+  data.append('qty', qty);
+  data.append('price', price);
+  data.append('unit', unit);
+  data.append('status', status);
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const { result } = await axiosPost(path, data, { headers });
+  if (result?.data.id) {
+    const addRes: ISKUs = result?.data || undefined;
+    const addErr = false;
+
+    return { addRes, addErr };
+  }
+
+  const addRes: { success: boolean, message: string} = result?.data.message || undefined;
+  const addErr = true;
+
+  return { addRes, addErr };
+};

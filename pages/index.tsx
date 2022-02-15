@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import Header from 'components/Header';
 import { useIsSigned, useToken } from 'context/LoginContext';
 import { useDebouncedEffect } from 'mixin';
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useState, ChangeEvent } from 'react';
 import {
   Button, Container, Form, Table,
@@ -57,69 +57,76 @@ const Home: NextPage<{
   };
 
   return (
-    <>
-      <Header />
-      <Container className="container-custom">
-        <Head>
-          <title>Simple CRUD</title>
-          <meta name="description" content="Simple CRUD using next app" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <Container className="container-custom">
+      <Head>
+        <title>Simple CRUD</title>
+        <meta name="description" content="Simple CRUD using next app" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-        <main className={styles.main}>
-          <div>
-            {isSigned() && (
-              <div className={styles.search_add}>
-                <Form.Control
-                  type="text"
-                  aria-describedby="Seacrh by SKU"
-                  placeholder="Seacrh by SKU"
-                  value={keyword}
-                  onChange={handleKeyword}
-                />
+      <main>
+        <div>
+          {isSigned() && (
+            <div className={styles.search_add}>
+              <Form.Control
+                type="text"
+                aria-describedby="Seacrh by SKU"
+                placeholder="Seacrh by SKU"
+                value={keyword}
+                onChange={handleKeyword}
+              />
+              <Link href="/action/add" passHref>
                 <Button
                   variant="success"
                   style={{ width: '10rem' }}
                 >
                   Add Product
                 </Button>
-              </div>
-            )}
-          </div>
-          {!!skus.length && !skusErr && (
-            <div className={styles.table_wraper}>
-              <Table striped bordered hover style={{ margin: 'unset' }}>
-                <thead>
-                  <tr>
-                    <th>SKU</th>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {skus.map((sku) => (
-                    <tr key={sku.id}>
-                      <td>{sku.sku}</td>
-                      <td>{sku.product_name}</td>
-                      <td>{sku.price}</td>
-                      <th style={{ textAlign: 'center' }}>
-                        <Button
-                          variant="danger"
-                          onClick={() => handleDelete(sku.sku)}
-                        >
-                          Delete
-                        </Button>
-                      </th>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+              </Link>
             </div>
           )}
-        </main>
-      </Container>
-    </>
+        </div>
+        {!!skus.length && !skusErr && (
+          <div className={styles.table_wraper}>
+            <Table striped bordered hover style={{ margin: 'unset' }}>
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Product Name</th>
+                  <th>Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {skus.map((sku) => (
+                  <tr key={sku.id}>
+                    <td>{sku.sku}</td>
+                    <td>{sku.product_name}</td>
+                    <td>{sku.price}</td>
+                    <th style={{ textAlign: 'center' }}>
+                      <Link href={`/action/edit?sku=${sku.sku}`} passHref>
+                        <Button
+                          variant="success"
+                          style={{ marginRight: '1rem' }}
+                        >
+                          Edit
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="danger"
+                        onClick={() => handleDelete(sku.sku)}
+                      >
+                        Delete
+                      </Button>
+                    </th>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        )}
+      </main>
+    </Container>
   );
 };
 
