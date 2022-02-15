@@ -66,3 +66,33 @@ export const signinUser = async (email: string, password: string): Promise<{
 
   return { signinSuccess, signinFailed };
 };
+
+export const deleteProduct = async (sku: string, token: string): Promise<{
+  deleteSuccess: any,
+  deleteFailed: boolean
+}> => {
+  const path = '/item/delete';
+
+  const data = new FormData();
+  data.append('sku', sku);
+  console.log(data);
+
+  let deleteSuccess;
+  let deleteFailed;
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  try {
+    const { result } = await axiosPost(path, data, { headers });
+    console.log(result);
+    deleteSuccess = result.data;
+    deleteFailed = false;
+  } catch (error: any) {
+    deleteSuccess = undefined;
+    deleteFailed = true;
+  }
+
+  return { deleteSuccess, deleteFailed };
+};

@@ -1,0 +1,11 @@
+.table_wraper {
+  max-height: 72vh;
+  overflow-y: auto;
+}
+
+.search_add {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}

@@ -4,7 +4,6 @@ import {
   Button, Container, Nav, Navbar,
 } from 'react-bootstrap';
 import { registerUser, signinUser } from 'services';
-import styles from './Header.module.scss';
 import SigninModal from './SigninModal';
 import SignupModal from './SignupModal';
 import SuccessRegisterModal from './SuccessRegisterModal';
@@ -106,7 +105,7 @@ const Header = () => {
         onSignin={handleSigninUser}
         isFailed={isSigninFailed}
       />
-      <Navbar bg="light" variant="light" fixed="top" className={styles.navbar}>
+      <Navbar bg="light" variant="light" fixed="top">
         <Container>
           <Navbar.Brand href="/">Simple CRUD</Navbar.Brand>
           <Nav>
@@ -122,14 +121,13 @@ const Header = () => {
               <div>
                 <Button
                   variant="primary"
-                  className={styles.signup}
                   onClick={() => setShowSignup(true)}
+                  style={{ marginRight: '1rem' }}
                 >
                   Signup
                 </Button>
                 <Button
                   variant="secondary"
-                  className={styles.signin}
                   onClick={() => setShowSignin(true)}
                 >
                   Signin
