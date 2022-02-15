@@ -63,7 +63,6 @@ const Action = () => {
     }
 
     if (!addErr) {
-      console.log('success');
       router.push('/');
     }
   };
@@ -83,7 +82,6 @@ const Action = () => {
     }
 
     if (!editErr) {
-      console.log('success');
       router.push('/');
     }
   };

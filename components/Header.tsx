@@ -1,4 +1,5 @@
 import { useChangeToken, useIsSigned, useSignout } from 'context/LoginContext';
+import Link from 'next/link';
 import React, { ChangeEvent, useState } from 'react';
 import {
   Button, Container, Nav, Navbar,
@@ -36,11 +37,7 @@ const Header = () => {
     setPasswordSingin(event.target.value);
   };
   const handleRegisterUser = async () => {
-    console.log(emailSingup);
-    console.log(passwordSingup);
-
-    const { registerSuccess, registerFailed } = await registerUser(emailSingup, passwordSingup);
-    console.log(registerSuccess, registerFailed);
+    const { registerSuccess } = await registerUser(emailSingup, passwordSingup);
 
     setEmailSignup('');
     setPasswordSingup('');
@@ -53,11 +50,7 @@ const Header = () => {
     }
   };
   const handleSigninUser = async () => {
-    console.log(emailSingin);
-    console.log(passwordSingin);
-
-    const { signinSuccess, signinFailed } = await signinUser(emailSingin, passwordSingin);
-    console.log(signinSuccess, signinFailed);
+    const { signinSuccess } = await signinUser(emailSingin, passwordSingin);
 
     setEmailSignin('');
     setPasswordSingin('');
@@ -107,7 +100,9 @@ const Header = () => {
       />
       <Navbar bg="light" variant="light" fixed="top">
         <Container>
-          <Navbar.Brand href="/">Simple CRUD</Navbar.Brand>
+          <Link href="/" passHref>
+            <Navbar.Brand href="/">Simple CRUD</Navbar.Brand>
+          </Link>
           <Nav>
             {isSigned() && (
               <Button

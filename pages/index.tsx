@@ -49,11 +49,9 @@ const Home: NextPage<{
   }, [keyword], 1000);
 
   const handleDelete = async (sku: string) => {
-    console.log(sku);
     const { deleteSuccess, deleteFailed } = await deleteProduct(sku, token);
     const { skusRes: skuResUpdate } = await getSKUsData();
     setSkus(skuResUpdate);
-    console.log(deleteSuccess, deleteFailed);
   };
 
   return (

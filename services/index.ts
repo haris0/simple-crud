@@ -33,7 +33,6 @@ export const registerUser = async (email: string, password: string): Promise<{
     registerSuccess = result.data;
     registerFailed = false;
   } catch (error: any) {
-    console.log(error.email);
     registerSuccess = undefined;
     registerFailed = true;
   }
@@ -50,7 +49,6 @@ export const signinUser = async (email: string, password: string): Promise<{
   const data = new FormData();
   data.append('email', email);
   data.append('password', password);
-  console.log(data);
 
   let signinSuccess;
   let signinFailed;
@@ -75,7 +73,6 @@ export const deleteProduct = async (sku: string, token: string): Promise<{
 
   const data = new FormData();
   data.append('sku', sku);
-  console.log(data);
 
   let deleteSuccess;
   let deleteFailed;
@@ -86,7 +83,6 @@ export const deleteProduct = async (sku: string, token: string): Promise<{
 
   try {
     const { result } = await axiosPost(path, data, { headers });
-    console.log(result);
     deleteSuccess = result.data;
     deleteFailed = false;
   } catch (error: any) {
@@ -105,7 +101,6 @@ export const getSKUsById = async (sku: string, token: string): Promise<{
 
   const data = new FormData();
   data.append('sku', sku);
-  console.log(data);
 
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -193,7 +188,6 @@ export const editProduct = async (
   };
 
   const { result } = await axiosPost(path, data, { headers });
-  console.log(result);
   if (result?.data.id) {
     const editRes: ISKUs = result?.data || undefined;
     const editErr = false;
