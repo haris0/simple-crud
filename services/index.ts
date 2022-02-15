@@ -158,3 +158,44 @@ export const addProduct = async (
 
   return { addRes, addErr };
 };
+
+export const editProduct = async (
+  sku: string,
+  productName: string,
+  qty: string,
+  price: string,
+  unit: string,
+  status: string,
+  token: string,
+): Promise<{
+  editRes: ISKUs | { success: boolean, message: string},
+  editErr: boolean
+}> => {
+  const path = '/item/update';
+
+  const data = new FormData();
+  data.append('sku', sku);
+  data.append('product_name', productName);
+  data.append('qty', qty);
+  data.append('price', price);
+  data.append('unit', unit);
+  data.append('status', status);
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const { result } = await axiosPost(path, data, { headers });
+  console.log(result);
+  if (result?.data.id) {
+    const editRes: ISKUs = result?.data || undefined;
+    const editErr = false;
+
+    return { editRes, editErr };
+  }
+
+  const editRes: { success: boolean, message: string} = result?.data.message || undefined;
+  const editErr = true;
+
+  return { editRes, editErr };
+};

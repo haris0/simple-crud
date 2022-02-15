@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Head from 'next/head';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
   Button, Col, Container, Form,
 } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { addProduct } from 'services';
+import { addProduct, editProduct, getSKUsById } from 'services';
 import { useToken } from 'context/LoginContext';
 
 const Action = () => {
@@ -39,6 +40,22 @@ const Action = () => {
     setStatus(event.target.value);
   };
 
+  useEffect(() => {
+    const getSKUById = async () => {
+      const { skusRes } = await getSKUsById(query.sku as string, token);
+      const skuById = skusRes[0];
+      setSku(skuById.sku);
+      setProductName(skuById.product_name);
+      setQty(skuById.qty.toString());
+      setPrice(skuById.price.toString());
+      setUnit(skuById.unit);
+      setStatus(skuById.status.toString());
+    };
+    if (query.sku) {
+      getSKUById();
+    }
+  }, [query.sku]);
+
   const handleAddProduct = async () => {
     const { addRes, addErr } = await addProduct(sku, productName, qty, price, unit, status, token);
     if (addErr) {
@@ -46,6 +63,26 @@ const Action = () => {
     }
 
     if (!addErr) {
+      console.log('success');
+      router.push('/');
+    }
+  };
+
+  const handleEditProduct = async () => {
+    const { editRes, editErr } = await editProduct(
+      sku,
+      productName,
+      qty,
+      price,
+      unit,
+      status,
+      token,
+    );
+    if (editErr) {
+      setFailedMsg(editRes as unknown as string);
+    }
+
+    if (!editErr) {
       console.log('success');
       router.push('/');
     }
@@ -139,7 +176,7 @@ const Action = () => {
               </Form.Label>
               <Col>
                 <Form.Control
-                  type="text"
+                  type="number"
                   value={status}
                   onChange={handleStatus}
                   placeholder="Status"
@@ -164,6 +201,7 @@ const Action = () => {
             <Button
               variant="success"
               style={{ width: '10rem', float: 'right', marginTop: '2rem' }}
+              onClick={() => handleEditProduct()}
             >
               Edit Product
             </Button>
