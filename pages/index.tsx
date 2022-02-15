@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 import Header from 'components/Header';
 import { useIsSigned, useToken } from 'context/LoginContext';
+import { useDebouncedEffect } from 'mixin';
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useState, ChangeEvent } from 'react';
 import {
   Button, Container, Form, Table,
 } from 'react-bootstrap';
-import { deleteProduct, getSKUsData } from 'services';
+import { deleteProduct, getSKUsById, getSKUsData } from 'services';
 import { ISKUs } from 'types';
 import styles from '../styles/Home.module.scss';
 
@@ -36,6 +37,16 @@ const Home: NextPage<{
   const handleKeyword = (event: ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   };
+
+  useDebouncedEffect(async () => {
+    if (keyword === '') {
+      const { skusRes: skuResUpdate } = await getSKUsData();
+      setSkus(skuResUpdate);
+    } else {
+      const { skusRes: skuResUpdate } = await getSKUsById(keyword, token);
+      setSkus(skuResUpdate);
+    }
+  }, [keyword], 1000);
 
   const handleDelete = async (sku: string) => {
     console.log(sku);

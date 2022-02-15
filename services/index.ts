@@ -96,3 +96,25 @@ export const deleteProduct = async (sku: string, token: string): Promise<{
 
   return { deleteSuccess, deleteFailed };
 };
+
+export const getSKUsById = async (sku: string, token: string): Promise<{
+  skusRes: ISKUs[],
+  skusErr: boolean
+}> => {
+  const path = '/item/search';
+
+  const data = new FormData();
+  data.append('sku', sku);
+  console.log(data);
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const { result, error } = await axiosPost(path, data, { headers });
+
+  const skusRes = [result?.data] || [];
+  const skusErr = !!error;
+
+  return { skusRes, skusErr };
+};
